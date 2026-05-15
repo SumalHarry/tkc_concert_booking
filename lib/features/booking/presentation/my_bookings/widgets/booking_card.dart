@@ -4,7 +4,6 @@ import '../../../../../core/utils/date_formatters.dart';
 import '../../../../../core/utils/money_formatters.dart';
 import '../../../../../theme/concert_theme.dart';
 import '../../../../concert/domain/entities/concert.dart';
-import '../../../domain/entities/booking.dart';
 import 'cancel_dialog.dart';
 
 class _BookingThumb extends StatelessWidget {
@@ -52,11 +51,17 @@ class _BookingThumb extends StatelessWidget {
 class BookingCard extends StatelessWidget {
   const BookingCard({
     super.key,
-    required this.booking,
+    required this.concertId,
+    required this.totalQuantity,
+    required this.totalPrice,
+    required this.bookingId,
     this.concert,
   });
 
-  final Booking booking;
+  final int concertId;
+  final int totalQuantity;
+  final int totalPrice;
+  final int bookingId;
   final Concert? concert;
 
   @override
@@ -66,7 +71,7 @@ class BookingCard extends StatelessWidget {
       color: const Color(0xFF6B7280),
     );
 
-    final name = concert?.name ?? 'Concert #${booking.concertId}';
+    final name = concert?.name ?? 'Concert #$concertId';
     final artist = concert?.artist;
     final dateTime = concert?.dateTime;
 
@@ -82,7 +87,7 @@ class BookingCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _BookingThumb(concert: concert, bookingId: booking.id),
+                _BookingThumb(concert: concert, bookingId: bookingId),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -117,12 +122,12 @@ class BookingCard extends StatelessWidget {
                     size: 18, color: muted?.color),
                 const SizedBox(width: 6),
                 Text(
-                  '${booking.quantity} ${booking.quantity == 1 ? 'ticket' : 'tickets'}',
+                  '$totalQuantity ${totalQuantity == 1 ? 'ticket' : 'tickets'}',
                   style: muted,
                 ),
                 const Spacer(),
                 Text(
-                  formatBaht(booking.totalPrice),
+                  formatBaht(totalPrice),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: ConcertTheme.accentDeep,

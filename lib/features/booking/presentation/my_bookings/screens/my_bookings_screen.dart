@@ -73,15 +73,40 @@ class MyBookingsScreen extends HookConsumerWidget {
         ],
       );
     } else {
+      // Group bookings by concertId and sum quantities
+      final grouped = <int, ({int concertId, int totalQuantity, int totalPrice, int firstBookingId})>{};
+      for (final b in list.bookings) {
+        final existing = grouped[b.concertId];
+        if (existing == null) {
+          grouped[b.concertId] = (
+            concertId: b.concertId,
+            totalQuantity: b.quantity,
+            totalPrice: b.totalPrice,
+            firstBookingId: b.id,
+          );
+        } else {
+          grouped[b.concertId] = (
+            concertId: b.concertId,
+            totalQuantity: existing.totalQuantity + b.quantity,
+            totalPrice: existing.totalPrice + b.totalPrice,
+            firstBookingId: existing.firstBookingId,
+          );
+        }
+      }
+      final groupedList = grouped.values.toList();
+
       body = ListView.builder(
         padding: const EdgeInsets.only(top: 8, bottom: 24),
         physics: const AlwaysScrollableScrollPhysics(),
-        itemCount: list.bookings.length,
+        itemCount: groupedList.length,
         itemBuilder: (context, idx) {
-          final b = list.bookings[idx];
+          final g = groupedList[idx];
           return BookingCard(
-            booking: b,
-            concert: list.concertFor(b.concertId),
+            concertId: g.concertId,
+            totalQuantity: g.totalQuantity,
+            totalPrice: g.totalPrice,
+            bookingId: g.firstBookingId,
+            concert: list.concertFor(g.concertId),
           );
         },
       );
