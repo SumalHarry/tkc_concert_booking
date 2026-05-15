@@ -137,7 +137,7 @@ class ConcertCard extends StatelessWidget {
                       const SizedBox(width: 6),
                       Expanded(
                         child: Text(
-                          concert.venue,
+                          concert.location,
                           style: subtitleStyle,
                         ),
                       ),

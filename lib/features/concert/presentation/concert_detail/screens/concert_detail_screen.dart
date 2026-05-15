@@ -139,7 +139,7 @@ class ConcertDetailScreen extends HookConsumerWidget {
                           icon: Icons.location_on_outlined,
                           iconColor: const Color(0xFFE53935),
                           title: 'Venue',
-                          value: concert.venue,
+                          value: '${concert.venue}\n${concert.location}',
                         ),
                         const SizedBox(height: 12),
                         _InfoRow(

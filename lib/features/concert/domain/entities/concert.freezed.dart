@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Concert {
 
- int get id; String get name; String get artist; String get dateTime; String get venue; int get pricePerTicket; int get availableSeats; int get totalSeats; String get imageUrl;
+ int get id; String get name; String get artist; String get venue; String get location; String get dateTime; int get pricePerTicket; int get availableSeats; int get totalSeats; String get imageUrl;
 /// Create a copy of Concert
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ConcertCopyWith<Concert> get copyWith => _$ConcertCopyWithImpl<Concert>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Concert&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.artist, artist) || other.artist == artist)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.pricePerTicket, pricePerTicket) || other.pricePerTicket == pricePerTicket)&&(identical(other.availableSeats, availableSeats) || other.availableSeats == availableSeats)&&(identical(other.totalSeats, totalSeats) || other.totalSeats == totalSeats)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Concert&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.artist, artist) || other.artist == artist)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.location, location) || other.location == location)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.pricePerTicket, pricePerTicket) || other.pricePerTicket == pricePerTicket)&&(identical(other.availableSeats, availableSeats) || other.availableSeats == availableSeats)&&(identical(other.totalSeats, totalSeats) || other.totalSeats == totalSeats)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,artist,dateTime,venue,pricePerTicket,availableSeats,totalSeats,imageUrl);
+int get hashCode => Object.hash(runtimeType,id,name,artist,venue,location,dateTime,pricePerTicket,availableSeats,totalSeats,imageUrl);
 
 @override
 String toString() {
-  return 'Concert(id: $id, name: $name, artist: $artist, dateTime: $dateTime, venue: $venue, pricePerTicket: $pricePerTicket, availableSeats: $availableSeats, totalSeats: $totalSeats, imageUrl: $imageUrl)';
+  return 'Concert(id: $id, name: $name, artist: $artist, venue: $venue, location: $location, dateTime: $dateTime, pricePerTicket: $pricePerTicket, availableSeats: $availableSeats, totalSeats: $totalSeats, imageUrl: $imageUrl)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ConcertCopyWith<$Res>  {
   factory $ConcertCopyWith(Concert value, $Res Function(Concert) _then) = _$ConcertCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String artist, String dateTime, String venue, int pricePerTicket, int availableSeats, int totalSeats, String imageUrl
+ int id, String name, String artist, String venue, String location, String dateTime, int pricePerTicket, int availableSeats, int totalSeats, String imageUrl
 });
 
 
@@ -65,13 +65,14 @@ class _$ConcertCopyWithImpl<$Res>
 
 /// Create a copy of Concert
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? artist = null,Object? dateTime = null,Object? venue = null,Object? pricePerTicket = null,Object? availableSeats = null,Object? totalSeats = null,Object? imageUrl = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? artist = null,Object? venue = null,Object? location = null,Object? dateTime = null,Object? pricePerTicket = null,Object? availableSeats = null,Object? totalSeats = null,Object? imageUrl = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,artist: null == artist ? _self.artist : artist // ignore: cast_nullable_to_non_nullable
-as String,dateTime: null == dateTime ? _self.dateTime : dateTime // ignore: cast_nullable_to_non_nullable
 as String,venue: null == venue ? _self.venue : venue // ignore: cast_nullable_to_non_nullable
+as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String,dateTime: null == dateTime ? _self.dateTime : dateTime // ignore: cast_nullable_to_non_nullable
 as String,pricePerTicket: null == pricePerTicket ? _self.pricePerTicket : pricePerTicket // ignore: cast_nullable_to_non_nullable
 as int,availableSeats: null == availableSeats ? _self.availableSeats : availableSeats // ignore: cast_nullable_to_non_nullable
 as int,totalSeats: null == totalSeats ? _self.totalSeats : totalSeats // ignore: cast_nullable_to_non_nullable
@@ -161,10 +162,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String artist,  String dateTime,  String venue,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String artist,  String venue,  String location,  String dateTime,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Concert() when $default != null:
-return $default(_that.id,_that.name,_that.artist,_that.dateTime,_that.venue,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_that.dateTime,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
   return orElse();
 
 }
@@ -182,10 +183,10 @@ return $default(_that.id,_that.name,_that.artist,_that.dateTime,_that.venue,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String artist,  String dateTime,  String venue,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String artist,  String venue,  String location,  String dateTime,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)  $default,) {final _that = this;
 switch (_that) {
 case _Concert():
-return $default(_that.id,_that.name,_that.artist,_that.dateTime,_that.venue,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_that.dateTime,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -202,10 +203,10 @@ return $default(_that.id,_that.name,_that.artist,_that.dateTime,_that.venue,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String artist,  String dateTime,  String venue,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String artist,  String venue,  String location,  String dateTime,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _Concert() when $default != null:
-return $default(_that.id,_that.name,_that.artist,_that.dateTime,_that.venue,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
+return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_that.dateTime,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
   return null;
 
 }
@@ -217,14 +218,15 @@ return $default(_that.id,_that.name,_that.artist,_that.dateTime,_that.venue,_tha
 @JsonSerializable()
 
 class _Concert implements Concert {
-  const _Concert({required this.id, required this.name, required this.artist, required this.dateTime, required this.venue, required this.pricePerTicket, required this.availableSeats, required this.totalSeats, required this.imageUrl});
+  const _Concert({required this.id, required this.name, required this.artist, required this.venue, required this.location, required this.dateTime, required this.pricePerTicket, required this.availableSeats, required this.totalSeats, required this.imageUrl});
   factory _Concert.fromJson(Map<String, dynamic> json) => _$ConcertFromJson(json);
 
 @override final  int id;
 @override final  String name;
 @override final  String artist;
-@override final  String dateTime;
 @override final  String venue;
+@override final  String location;
+@override final  String dateTime;
 @override final  int pricePerTicket;
 @override final  int availableSeats;
 @override final  int totalSeats;
@@ -243,16 +245,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Concert&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.artist, artist) || other.artist == artist)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.pricePerTicket, pricePerTicket) || other.pricePerTicket == pricePerTicket)&&(identical(other.availableSeats, availableSeats) || other.availableSeats == availableSeats)&&(identical(other.totalSeats, totalSeats) || other.totalSeats == totalSeats)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Concert&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.artist, artist) || other.artist == artist)&&(identical(other.venue, venue) || other.venue == venue)&&(identical(other.location, location) || other.location == location)&&(identical(other.dateTime, dateTime) || other.dateTime == dateTime)&&(identical(other.pricePerTicket, pricePerTicket) || other.pricePerTicket == pricePerTicket)&&(identical(other.availableSeats, availableSeats) || other.availableSeats == availableSeats)&&(identical(other.totalSeats, totalSeats) || other.totalSeats == totalSeats)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,artist,dateTime,venue,pricePerTicket,availableSeats,totalSeats,imageUrl);
+int get hashCode => Object.hash(runtimeType,id,name,artist,venue,location,dateTime,pricePerTicket,availableSeats,totalSeats,imageUrl);
 
 @override
 String toString() {
-  return 'Concert(id: $id, name: $name, artist: $artist, dateTime: $dateTime, venue: $venue, pricePerTicket: $pricePerTicket, availableSeats: $availableSeats, totalSeats: $totalSeats, imageUrl: $imageUrl)';
+  return 'Concert(id: $id, name: $name, artist: $artist, venue: $venue, location: $location, dateTime: $dateTime, pricePerTicket: $pricePerTicket, availableSeats: $availableSeats, totalSeats: $totalSeats, imageUrl: $imageUrl)';
 }
 
 
@@ -263,7 +265,7 @@ abstract mixin class _$ConcertCopyWith<$Res> implements $ConcertCopyWith<$Res> {
   factory _$ConcertCopyWith(_Concert value, $Res Function(_Concert) _then) = __$ConcertCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String artist, String dateTime, String venue, int pricePerTicket, int availableSeats, int totalSeats, String imageUrl
+ int id, String name, String artist, String venue, String location, String dateTime, int pricePerTicket, int availableSeats, int totalSeats, String imageUrl
 });
 
 
@@ -280,13 +282,14 @@ class __$ConcertCopyWithImpl<$Res>
 
 /// Create a copy of Concert
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? artist = null,Object? dateTime = null,Object? venue = null,Object? pricePerTicket = null,Object? availableSeats = null,Object? totalSeats = null,Object? imageUrl = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? artist = null,Object? venue = null,Object? location = null,Object? dateTime = null,Object? pricePerTicket = null,Object? availableSeats = null,Object? totalSeats = null,Object? imageUrl = null,}) {
   return _then(_Concert(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as int,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,artist: null == artist ? _self.artist : artist // ignore: cast_nullable_to_non_nullable
-as String,dateTime: null == dateTime ? _self.dateTime : dateTime // ignore: cast_nullable_to_non_nullable
 as String,venue: null == venue ? _self.venue : venue // ignore: cast_nullable_to_non_nullable
+as String,location: null == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String,dateTime: null == dateTime ? _self.dateTime : dateTime // ignore: cast_nullable_to_non_nullable
 as String,pricePerTicket: null == pricePerTicket ? _self.pricePerTicket : pricePerTicket // ignore: cast_nullable_to_non_nullable
 as int,availableSeats: null == availableSeats ? _self.availableSeats : availableSeats // ignore: cast_nullable_to_non_nullable
 as int,totalSeats: null == totalSeats ? _self.totalSeats : totalSeats // ignore: cast_nullable_to_non_nullable
