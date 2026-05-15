@@ -1,0 +1,33 @@
+name: miniapp_concert
+description: Concert booking Flutter mini app package for Mock Mail Core App integration.
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  dio: ^5.9.2
+  equatable: ^2.0.8
+  flutter_hooks: ^0.21.3+1
+  flutter_riverpod: ^3.3.1
+  intl: ^0.20.2
+  freezed_annotation: ^3.1.0
+  go_router: ^17.2.3
+  hooks_riverpod: ^3.3.1
+  json_annotation: ^4.11.0
+  riverpod_annotation: ^4.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  build_runner: ^2.15.0
+  flutter_lints: ^6.0.0
+  freezed: ^3.2.5
+  json_serializable: ^6.13.0
+  riverpod_generator: ^4.0.3
+
+flutter:
+  uses-material-design: true
