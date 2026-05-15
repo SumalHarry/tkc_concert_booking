@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import '../../../../core/network/models/either.dart';
 import '../../../../core/network/dio_mapper.dart';
 import '../../../../core/network/failures/app_exception.dart';
-import '../../../../core/network/models/unit.dart';
 import '../../domain/entities/booking.dart';
 
 abstract class BookingRemoteDataSource {
@@ -14,7 +13,6 @@ abstract class BookingRemoteDataSource {
 
   Future<Either<AppException, List<Booking>>> fetchBookings();
 
-  Future<Either<AppException, Unit>> cancelBooking(int bookingId);
 }
 
 class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
@@ -53,15 +51,6 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
     }
   }
 
-  @override
-  Future<Either<AppException, Unit>> cancelBooking(int bookingId) async {
-    try {
-      await _dio.delete<void>('/booking/$bookingId');
-      return const Right(unit);
-    } catch (e, st) {
-      return Left(mapDioException(e, st));
-    }
-  }
 }
 
 Map<String, dynamic> _unwrapObject(dynamic data) {

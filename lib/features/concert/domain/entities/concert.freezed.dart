@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Concert {
 
- int get id; String get name; String get artist; String get venue; String get location; String get dateTime; int get pricePerTicket; int get availableSeats; int get totalSeats; String get imageUrl;
+ int get id; String get name; String get artist; String get venue; String get location;@JsonKey(readValue: _readConcertDateTime) String get dateTime;@JsonKey(name: 'price') int get pricePerTicket; int get availableSeats; int get totalSeats;@JsonKey(name: 'image') String get imageUrl;
 /// Create a copy of Concert
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ConcertCopyWith<$Res>  {
   factory $ConcertCopyWith(Concert value, $Res Function(Concert) _then) = _$ConcertCopyWithImpl;
 @useResult
 $Res call({
- int id, String name, String artist, String venue, String location, String dateTime, int pricePerTicket, int availableSeats, int totalSeats, String imageUrl
+ int id, String name, String artist, String venue, String location,@JsonKey(readValue: _readConcertDateTime) String dateTime,@JsonKey(name: 'price') int pricePerTicket, int availableSeats, int totalSeats,@JsonKey(name: 'image') String imageUrl
 });
 
 
@@ -162,7 +162,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String artist,  String venue,  String location,  String dateTime,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  String name,  String artist,  String venue,  String location, @JsonKey(readValue: _readConcertDateTime)  String dateTime, @JsonKey(name: 'price')  int pricePerTicket,  int availableSeats,  int totalSeats, @JsonKey(name: 'image')  String imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Concert() when $default != null:
 return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_that.dateTime,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
@@ -183,7 +183,7 @@ return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String artist,  String venue,  String location,  String dateTime,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  String name,  String artist,  String venue,  String location, @JsonKey(readValue: _readConcertDateTime)  String dateTime, @JsonKey(name: 'price')  int pricePerTicket,  int availableSeats,  int totalSeats, @JsonKey(name: 'image')  String imageUrl)  $default,) {final _that = this;
 switch (_that) {
 case _Concert():
 return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_that.dateTime,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
@@ -203,7 +203,7 @@ return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String artist,  String venue,  String location,  String dateTime,  int pricePerTicket,  int availableSeats,  int totalSeats,  String imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  String name,  String artist,  String venue,  String location, @JsonKey(readValue: _readConcertDateTime)  String dateTime, @JsonKey(name: 'price')  int pricePerTicket,  int availableSeats,  int totalSeats, @JsonKey(name: 'image')  String imageUrl)?  $default,) {final _that = this;
 switch (_that) {
 case _Concert() when $default != null:
 return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_that.dateTime,_that.pricePerTicket,_that.availableSeats,_that.totalSeats,_that.imageUrl);case _:
@@ -218,7 +218,7 @@ return $default(_that.id,_that.name,_that.artist,_that.venue,_that.location,_tha
 @JsonSerializable()
 
 class _Concert implements Concert {
-  const _Concert({required this.id, required this.name, required this.artist, required this.venue, required this.location, required this.dateTime, required this.pricePerTicket, required this.availableSeats, required this.totalSeats, required this.imageUrl});
+  const _Concert({required this.id, required this.name, required this.artist, required this.venue, required this.location, @JsonKey(readValue: _readConcertDateTime) required this.dateTime, @JsonKey(name: 'price') required this.pricePerTicket, required this.availableSeats, required this.totalSeats, @JsonKey(name: 'image') required this.imageUrl});
   factory _Concert.fromJson(Map<String, dynamic> json) => _$ConcertFromJson(json);
 
 @override final  int id;
@@ -226,11 +226,11 @@ class _Concert implements Concert {
 @override final  String artist;
 @override final  String venue;
 @override final  String location;
-@override final  String dateTime;
-@override final  int pricePerTicket;
+@override@JsonKey(readValue: _readConcertDateTime) final  String dateTime;
+@override@JsonKey(name: 'price') final  int pricePerTicket;
 @override final  int availableSeats;
 @override final  int totalSeats;
-@override final  String imageUrl;
+@override@JsonKey(name: 'image') final  String imageUrl;
 
 /// Create a copy of Concert
 /// with the given fields replaced by the non-null parameter values.
@@ -265,7 +265,7 @@ abstract mixin class _$ConcertCopyWith<$Res> implements $ConcertCopyWith<$Res> {
   factory _$ConcertCopyWith(_Concert value, $Res Function(_Concert) _then) = __$ConcertCopyWithImpl;
 @override @useResult
 $Res call({
- int id, String name, String artist, String venue, String location, String dateTime, int pricePerTicket, int availableSeats, int totalSeats, String imageUrl
+ int id, String name, String artist, String venue, String location,@JsonKey(readValue: _readConcertDateTime) String dateTime,@JsonKey(name: 'price') int pricePerTicket, int availableSeats, int totalSeats,@JsonKey(name: 'image') String imageUrl
 });
 
 

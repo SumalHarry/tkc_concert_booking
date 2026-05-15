@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../concert/domain/entities/concert.dart';
 import '../../../domain/entities/booking.dart';
 
 enum MyBookingsConcreteState {
@@ -12,38 +13,37 @@ enum MyBookingsConcreteState {
 class MyBookingsState extends Equatable {
   const MyBookingsState({
     this.bookings = const [],
+    this.concerts = const {},
     this.hasData = false,
     this.state = MyBookingsConcreteState.initial,
     this.message = '',
-    this.cancelBusyId,
   });
 
   final List<Booking> bookings;
+  final Map<int, Concert> concerts;
   final bool hasData;
   final MyBookingsConcreteState state;
   final String message;
-  /// While non-null, a cancel attempt is running for this booking ID.
-  final int? cancelBusyId;
+
+  Concert? concertFor(int concertId) => concerts[concertId];
 
   MyBookingsState copyWith({
     List<Booking>? bookings,
+    Map<int, Concert>? concerts,
     bool? hasData,
     MyBookingsConcreteState? state,
     String? message,
-    int? cancelBusyId,
-    bool resetCancelBusyId = false,
   }) {
     return MyBookingsState(
       bookings: bookings ?? this.bookings,
+      concerts: concerts ?? this.concerts,
       hasData: hasData ?? this.hasData,
       state: state ?? this.state,
       message: message ?? this.message,
-      cancelBusyId:
-          resetCancelBusyId ? null : (cancelBusyId ?? this.cancelBusyId),
     );
   }
 
   @override
   List<Object?> get props =>
-      [bookings, hasData, state, message, cancelBusyId];
+      [bookings, concerts, hasData, state, message];
 }

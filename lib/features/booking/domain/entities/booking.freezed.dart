@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Booking {
 
- int get id; int get concertId; BookingConcert get concert; int get quantity; int get total; String get status; String get bookedAt;
+ int get id; int get userId; int get concertId; int get quantity; int get totalPrice; String get createdAt;
 /// Create a copy of Booking
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BookingCopyWith<Booking> get copyWith => _$BookingCopyWithImpl<Booking>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Booking&&(identical(other.id, id) || other.id == id)&&(identical(other.concertId, concertId) || other.concertId == concertId)&&(identical(other.concert, concert) || other.concert == concert)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.total, total) || other.total == total)&&(identical(other.status, status) || other.status == status)&&(identical(other.bookedAt, bookedAt) || other.bookedAt == bookedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Booking&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.concertId, concertId) || other.concertId == concertId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,concertId,concert,quantity,total,status,bookedAt);
+int get hashCode => Object.hash(runtimeType,id,userId,concertId,quantity,totalPrice,createdAt);
 
 @override
 String toString() {
-  return 'Booking(id: $id, concertId: $concertId, concert: $concert, quantity: $quantity, total: $total, status: $status, bookedAt: $bookedAt)';
+  return 'Booking(id: $id, userId: $userId, concertId: $concertId, quantity: $quantity, totalPrice: $totalPrice, createdAt: $createdAt)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $BookingCopyWith<$Res>  {
   factory $BookingCopyWith(Booking value, $Res Function(Booking) _then) = _$BookingCopyWithImpl;
 @useResult
 $Res call({
- int id, int concertId, BookingConcert concert, int quantity, int total, String status, String bookedAt
+ int id, int userId, int concertId, int quantity, int totalPrice, String createdAt
 });
 
 
-$BookingConcertCopyWith<$Res> get concert;
+
 
 }
 /// @nodoc
@@ -65,28 +65,18 @@ class _$BookingCopyWithImpl<$Res>
 
 /// Create a copy of Booking
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? concertId = null,Object? concert = null,Object? quantity = null,Object? total = null,Object? status = null,Object? bookedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? userId = null,Object? concertId = null,Object? quantity = null,Object? totalPrice = null,Object? createdAt = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,concertId: null == concertId ? _self.concertId : concertId // ignore: cast_nullable_to_non_nullable
-as int,concert: null == concert ? _self.concert : concert // ignore: cast_nullable_to_non_nullable
-as BookingConcert,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as int,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
-as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,bookedAt: null == bookedAt ? _self.bookedAt : bookedAt // ignore: cast_nullable_to_non_nullable
+as int,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as int,totalPrice: null == totalPrice ? _self.totalPrice : totalPrice // ignore: cast_nullable_to_non_nullable
+as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
-/// Create a copy of Booking
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$BookingConcertCopyWith<$Res> get concert {
-  
-  return $BookingConcertCopyWith<$Res>(_self.concert, (value) {
-    return _then(_self.copyWith(concert: value));
-  });
-}
+
 }
 
 
@@ -168,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int concertId,  BookingConcert concert,  int quantity,  int total,  String status,  String bookedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int id,  int userId,  int concertId,  int quantity,  int totalPrice,  String createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Booking() when $default != null:
-return $default(_that.id,_that.concertId,_that.concert,_that.quantity,_that.total,_that.status,_that.bookedAt);case _:
+return $default(_that.id,_that.userId,_that.concertId,_that.quantity,_that.totalPrice,_that.createdAt);case _:
   return orElse();
 
 }
@@ -189,10 +179,10 @@ return $default(_that.id,_that.concertId,_that.concert,_that.quantity,_that.tota
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int concertId,  BookingConcert concert,  int quantity,  int total,  String status,  String bookedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int id,  int userId,  int concertId,  int quantity,  int totalPrice,  String createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Booking():
-return $default(_that.id,_that.concertId,_that.concert,_that.quantity,_that.total,_that.status,_that.bookedAt);case _:
+return $default(_that.id,_that.userId,_that.concertId,_that.quantity,_that.totalPrice,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +199,10 @@ return $default(_that.id,_that.concertId,_that.concert,_that.quantity,_that.tota
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int concertId,  BookingConcert concert,  int quantity,  int total,  String status,  String bookedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int id,  int userId,  int concertId,  int quantity,  int totalPrice,  String createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Booking() when $default != null:
-return $default(_that.id,_that.concertId,_that.concert,_that.quantity,_that.total,_that.status,_that.bookedAt);case _:
+return $default(_that.id,_that.userId,_that.concertId,_that.quantity,_that.totalPrice,_that.createdAt);case _:
   return null;
 
 }
@@ -224,16 +214,15 @@ return $default(_that.id,_that.concertId,_that.concert,_that.quantity,_that.tota
 @JsonSerializable()
 
 class _Booking implements Booking {
-  const _Booking({required this.id, required this.concertId, required this.concert, required this.quantity, required this.total, required this.status, required this.bookedAt});
+  const _Booking({required this.id, required this.userId, required this.concertId, required this.quantity, required this.totalPrice, required this.createdAt});
   factory _Booking.fromJson(Map<String, dynamic> json) => _$BookingFromJson(json);
 
 @override final  int id;
+@override final  int userId;
 @override final  int concertId;
-@override final  BookingConcert concert;
 @override final  int quantity;
-@override final  int total;
-@override final  String status;
-@override final  String bookedAt;
+@override final  int totalPrice;
+@override final  String createdAt;
 
 /// Create a copy of Booking
 /// with the given fields replaced by the non-null parameter values.
@@ -248,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Booking&&(identical(other.id, id) || other.id == id)&&(identical(other.concertId, concertId) || other.concertId == concertId)&&(identical(other.concert, concert) || other.concert == concert)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.total, total) || other.total == total)&&(identical(other.status, status) || other.status == status)&&(identical(other.bookedAt, bookedAt) || other.bookedAt == bookedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Booking&&(identical(other.id, id) || other.id == id)&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.concertId, concertId) || other.concertId == concertId)&&(identical(other.quantity, quantity) || other.quantity == quantity)&&(identical(other.totalPrice, totalPrice) || other.totalPrice == totalPrice)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,concertId,concert,quantity,total,status,bookedAt);
+int get hashCode => Object.hash(runtimeType,id,userId,concertId,quantity,totalPrice,createdAt);
 
 @override
 String toString() {
-  return 'Booking(id: $id, concertId: $concertId, concert: $concert, quantity: $quantity, total: $total, status: $status, bookedAt: $bookedAt)';
+  return 'Booking(id: $id, userId: $userId, concertId: $concertId, quantity: $quantity, totalPrice: $totalPrice, createdAt: $createdAt)';
 }
 
 
@@ -268,11 +257,11 @@ abstract mixin class _$BookingCopyWith<$Res> implements $BookingCopyWith<$Res> {
   factory _$BookingCopyWith(_Booking value, $Res Function(_Booking) _then) = __$BookingCopyWithImpl;
 @override @useResult
 $Res call({
- int id, int concertId, BookingConcert concert, int quantity, int total, String status, String bookedAt
+ int id, int userId, int concertId, int quantity, int totalPrice, String createdAt
 });
 
 
-@override $BookingConcertCopyWith<$Res> get concert;
+
 
 }
 /// @nodoc
@@ -285,29 +274,19 @@ class __$BookingCopyWithImpl<$Res>
 
 /// Create a copy of Booking
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? concertId = null,Object? concert = null,Object? quantity = null,Object? total = null,Object? status = null,Object? bookedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? userId = null,Object? concertId = null,Object? quantity = null,Object? totalPrice = null,Object? createdAt = null,}) {
   return _then(_Booking(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as int,userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as int,concertId: null == concertId ? _self.concertId : concertId // ignore: cast_nullable_to_non_nullable
-as int,concert: null == concert ? _self.concert : concert // ignore: cast_nullable_to_non_nullable
-as BookingConcert,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
-as int,total: null == total ? _self.total : total // ignore: cast_nullable_to_non_nullable
-as int,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as String,bookedAt: null == bookedAt ? _self.bookedAt : bookedAt // ignore: cast_nullable_to_non_nullable
+as int,quantity: null == quantity ? _self.quantity : quantity // ignore: cast_nullable_to_non_nullable
+as int,totalPrice: null == totalPrice ? _self.totalPrice : totalPrice // ignore: cast_nullable_to_non_nullable
+as int,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
 
-/// Create a copy of Booking
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$BookingConcertCopyWith<$Res> get concert {
-  
-  return $BookingConcertCopyWith<$Res>(_self.concert, (value) {
-    return _then(_self.copyWith(concert: value));
-  });
-}
+
 }
 
 // dart format on

@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../../../theme/concert_theme.dart';
+import '../../../../../shared/widgets/concert_app_bar.dart';
 import '../providers/my_bookings_notifier.dart';
 import '../providers/my_bookings_state.dart';
 import '../widgets/booking_card.dart';
-import '../widgets/cancel_dialog.dart';
 
 class MyBookingsScreen extends HookConsumerWidget {
   const MyBookingsScreen({super.key});
@@ -81,52 +79,18 @@ class MyBookingsScreen extends HookConsumerWidget {
         itemCount: list.bookings.length,
         itemBuilder: (context, idx) {
           final b = list.bookings[idx];
-          final cancelBusy = list.cancelBusyId == b.id;
           return BookingCard(
             booking: b,
-            cancelBusy: cancelBusy,
-            onCancel: cancelBusy
-                ? () {}
-                : () async {
-                    final ok = await showCancelBookingDialog(context);
-                    if (!ok || !context.mounted) return;
-                    final messenger = ScaffoldMessenger.of(context);
-                    final msg = await ref
-                        .read(myBookingsProvider.notifier)
-                        .cancel(b);
-                    if (!context.mounted) return;
-                    if (msg != null) {
-                      messenger.showSnackBar(SnackBar(content: Text(msg)));
-                    }
-                  },
+            concert: list.concertFor(b.concertId),
           );
         },
       );
     }
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        leadingWidth: 120,
-        leading: TextButton.icon(
-          onPressed: () => context.pop(),
-          icon: const Icon(Icons.chevron_left, size: 24),
-          label: Text(
-            'Concerts',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              color: ConcertTheme.accentDeep,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ),
-        title: Text(
-          'My Bookings',
-          style: Theme.of(
-            context,
-          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
-        ),
-        centerTitle: true,
+      appBar: const ConcertAppBar(
+        title: 'My Bookings',
+        backLabel: 'Concerts',
       ),
       body: RefreshIndicator(onRefresh: onRefresh, child: body),
     );

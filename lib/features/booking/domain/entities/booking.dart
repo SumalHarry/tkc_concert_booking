@@ -1,7 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-import 'booking_concert.dart';
-
 part 'booking.freezed.dart';
 part 'booking.g.dart';
 
@@ -9,12 +7,11 @@ part 'booking.g.dart';
 abstract class Booking with _$Booking {
   const factory Booking({
     required int id,
+    required int userId,
     required int concertId,
-    required BookingConcert concert,
     required int quantity,
-    required int total,
-    required String status,
-    required String bookedAt,
+    required int totalPrice,
+    required String createdAt,
   }) = _Booking;
 
   factory Booking.fromJson(Map<String, dynamic> json) =>

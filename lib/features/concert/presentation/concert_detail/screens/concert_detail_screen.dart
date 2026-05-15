@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../core/utils/date_formatters.dart';
 import '../../../../../core/utils/money_formatters.dart';
+import '../../../../../shared/widgets/concert_app_bar.dart';
 import '../../../../../theme/concert_theme.dart';
 import '../../concert_list/widgets/concert_card.dart';
 import '../widgets/ticket_quantity_selector.dart';
@@ -86,105 +87,88 @@ class ConcertDetailScreen extends HookConsumerWidget {
       } else {
         final qty = s.clampedQuantity;
 
-        content = CustomScrollView(
+        content = ListView(
           physics: const AlwaysScrollableScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: ConcertHero(concert: concert, height: 230),
-                ),
-              ),
+          padding: const EdgeInsets.only(bottom: 120),
+          children: [
+            ConcertHero(
+              concert: concert,
+              height: 240,
+              borderRadius: BorderRadius.zero,
             ),
-            SliverToBoxAdapter(
-              child: Transform.translate(
-                offset: const Offset(0, -22),
-                child: Material(
-                  color: Colors.white,
-                  elevation: 6,
-                  shadowColor: Colors.black26,
-                  borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(22),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(18, 18, 18, 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          concert.name,
-                          style: theme.textTheme.headlineSmall?.copyWith(
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        const SizedBox(height: 6),
-                        Text(
-                          concert.artist,
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            color: const Color(0xFF6B7280),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        _InfoRow(
-                          icon: Icons.calendar_month,
-                          iconColor: ConcertTheme.accent,
-                          title: 'Date & Time',
-                          value: formatConcertDateTime(concert.dateTime),
-                        ),
-                        const SizedBox(height: 12),
-                        _InfoRow(
-                          icon: Icons.location_on_outlined,
-                          iconColor: const Color(0xFFE53935),
-                          title: 'Venue',
-                          value: '${concert.venue}\n${concert.location}',
-                        ),
-                        const SizedBox(height: 12),
-                        _InfoRow(
-                          icon: Icons.confirmation_number_outlined,
-                          iconColor: const Color(0xFF43A047),
-                          title: 'Available Seats',
-                          value:
-                              '${concert.availableSeats} / ${concert.totalSeats}',
-                        ),
-                        const SizedBox(height: 18),
-                        Row(
-                          children: [
-                            Text(
-                              'Tickets',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            const Spacer(),
-                            TicketQuantitySelector(
-                              quantity: qty <= 0 ? 0 : qty,
-                              canDecrease: qty > 1 && !s.bookingBusy,
-                              canIncrease:
-                                  qty < concert.availableSeats &&
-                                  !s.bookingBusy,
-                              onMinus: notifier.decrement,
-                              onPlus: notifier.increment,
-                            ),
-                          ],
-                        ),
-                        if (s.state == ConcertDetailConcreteState.failure &&
-                            s.message.isNotEmpty) ...[
-                          const SizedBox(height: 12),
-                          Text(
-                            s.message,
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.error,
-                            ),
-                          ),
-                        ],
-                        const SizedBox(height: 120),
-                      ],
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    concert.name,
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                ),
+                  const SizedBox(height: 4),
+                  Text(
+                    concert.artist,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: const Color(0xFF6B7280),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _InfoRow(
+                    icon: Icons.calendar_month,
+                    iconColor: ConcertTheme.accent,
+                    title: 'Date & Time',
+                    value: formatConcertDateTime(concert.dateTime),
+                  ),
+                  const SizedBox(height: 14),
+                  _InfoRow(
+                    icon: Icons.location_on_outlined,
+                    iconColor: const Color(0xFFE53935),
+                    title: 'Venue',
+                    value: concert.location,
+                  ),
+                  const SizedBox(height: 14),
+                  _InfoRow(
+                    icon: Icons.confirmation_number_outlined,
+                    iconColor: const Color(0xFF43A047),
+                    title: 'Available Seats',
+                    value: '${concert.availableSeats} / ${concert.totalSeats}',
+                  ),
+                  const SizedBox(height: 20),
+                  const Divider(),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Text(
+                        'Tickets',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const Spacer(),
+                      TicketQuantitySelector(
+                        quantity: qty <= 0 ? 0 : qty,
+                        canDecrease: qty > 1 && !s.bookingBusy,
+                        canIncrease:
+                            qty < concert.availableSeats && !s.bookingBusy,
+                        onMinus: notifier.decrement,
+                        onPlus: notifier.increment,
+                      ),
+                    ],
+                  ),
+                  if (s.state == ConcertDetailConcreteState.failure &&
+                      s.message.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    Text(
+                      s.message,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.error,
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ),
           ],
@@ -193,79 +177,71 @@ class ConcertDetailScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white,
-        leading: TextButton.icon(
-          onPressed: () => context.pop(),
-          style: TextButton.styleFrom(foregroundColor: Colors.white),
-          icon: const Icon(Icons.chevron_left, size: 24),
-          label: const Text('Concerts'),
-        ),
+      appBar: const ConcertAppBar(
+        title: '',
+        backLabel: 'Concerts',
       ),
-      extendBodyBehindAppBar: true,
       bottomNavigationBar: (s.concert == null)
           ? null
           : SafeArea(
               top: false,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 14),
+                child: Row(
                   children: [
-                    Row(
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Total',
-                          style: theme.textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.w700,
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: const Color(0xFF6B7280),
                           ),
                         ),
-                        const Spacer(),
                         Text(
                           formatBaht(s.totalPrice),
-                          style: theme.textTheme.titleMedium?.copyWith(
+                          style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w800,
                             color: ConcertTheme.accentDeep,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      height: 48,
-                      child: ElevatedButton(
-                        onPressed: canBook ? onBook : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ConcertTheme.accent,
-                          foregroundColor: Colors.white,
-                          disabledBackgroundColor: const Color(0xFFFFE0B2),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: SizedBox(
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: canBook ? onBook : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: ConcertTheme.accent,
+                            foregroundColor: Colors.white,
+                            disabledBackgroundColor: const Color(0xFFFFE0B2),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14),
+                            ),
                           ),
-                        ),
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          child: s.bookingBusy
-                              ? const SizedBox(
-                                  width: 22,
-                                  height: 22,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2.2,
-                                    color: Colors.white,
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 200),
+                            child: s.bookingBusy
+                                ? const SizedBox(
+                                    width: 22,
+                                    height: 22,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.2,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Book Now',
+                                    key: ValueKey('book_label'),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                    ),
                                   ),
-                                )
-                              : const Text(
-                                  'Book Now',
-                                  key: ValueKey('book_label'),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16,
-                                  ),
-                                ),
+                          ),
                         ),
                       ),
                     ),

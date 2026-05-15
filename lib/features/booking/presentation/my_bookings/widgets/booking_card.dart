@@ -3,31 +3,48 @@ import 'package:flutter/material.dart';
 import '../../../../../core/utils/date_formatters.dart';
 import '../../../../../core/utils/money_formatters.dart';
 import '../../../../../theme/concert_theme.dart';
+import '../../../../concert/domain/entities/concert.dart';
 import '../../../domain/entities/booking.dart';
+import 'cancel_dialog.dart';
 
-class BookingThumb extends StatelessWidget {
-  const BookingThumb({super.key, required this.bookingId});
+class _BookingThumb extends StatelessWidget {
+  const _BookingThumb({required this.concert, required this.bookingId});
 
+  final Concert? concert;
   final int bookingId;
 
   @override
   Widget build(BuildContext context) {
     final gradient =
         bookingId.isEven ? ConcertTheme.heroBlue : ConcertTheme.heroPurple;
+    final icon =
+        bookingId.isEven ? Icons.mic : Icons.music_note_rounded;
+
+    final c = concert;
+    final hasRemote = c != null &&
+        c.imageUrl.startsWith('http');
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(12),
-      child: Container(
-        width: 54,
-        height: 54,
-        decoration: BoxDecoration(gradient: gradient),
-        alignment: Alignment.center,
-        child: Icon(
-          bookingId.isEven ? Icons.mic : Icons.music_note_rounded,
-          color: Colors.white70,
-          size: 26,
-        ),
+      child: SizedBox(
+        width: 56,
+        height: 56,
+        child: hasRemote
+            ? Image.network(
+                c.imageUrl,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => _placeholder(gradient, icon),
+              )
+            : _placeholder(gradient, icon),
       ),
+    );
+  }
+
+  Widget _placeholder(LinearGradient gradient, IconData icon) {
+    return Container(
+      decoration: BoxDecoration(gradient: gradient),
+      alignment: Alignment.center,
+      child: Icon(icon, color: Colors.white70, size: 26),
     );
   }
 }
@@ -36,21 +53,11 @@ class BookingCard extends StatelessWidget {
   const BookingCard({
     super.key,
     required this.booking,
-    required this.onCancel,
-    this.cancelBusy = false,
+    this.concert,
   });
 
   final Booking booking;
-  final VoidCallback onCancel;
-  final bool cancelBusy;
-
-  String get _statusLabel {
-    final s = booking.status.toLowerCase();
-    if (s.isEmpty) return 'Unknown';
-    return s[0].toUpperCase() + s.substring(1);
-  }
-
-  bool get _isConfirmed => booking.status.toLowerCase() == 'confirmed';
+  final Concert? concert;
 
   @override
   Widget build(BuildContext context) {
@@ -59,10 +66,14 @@ class BookingCard extends StatelessWidget {
       color: const Color(0xFF6B7280),
     );
 
+    final name = concert?.name ?? 'Concert #${booking.concertId}';
+    final artist = concert?.artist;
+    final dateTime = concert?.dateTime;
+
     return Card(
       margin: const EdgeInsets.fromLTRB(16, 0, 16, 14),
       elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
@@ -71,91 +82,112 @@ class BookingCard extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                BookingThumb(bookingId: booking.id),
+                _BookingThumb(concert: concert, bookingId: booking.id),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        booking.concert.name,
+                        name,
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(booking.concert.artist, style: muted),
-                      const SizedBox(height: 6),
-                      Text(
-                        formatConcertDateTime(booking.concert.dateTime),
-                        style: muted,
-                      ),
+                      if (artist != null) ...[
+                        const SizedBox(height: 3),
+                        Text(artist, style: muted),
+                      ],
+                      if (dateTime != null) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          formatConcertDateTime(dateTime),
+                          style: muted,
+                        ),
+                      ],
                     ],
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             Row(
               children: [
                 Icon(Icons.confirmation_number_outlined,
                     size: 18, color: muted?.color),
                 const SizedBox(width: 6),
-                Text('${booking.quantity} tickets', style: muted),
+                Text(
+                  '${booking.quantity} ${booking.quantity == 1 ? 'ticket' : 'tickets'}',
+                  style: muted,
+                ),
                 const Spacer(),
                 Text(
-                  formatBaht(booking.total),
-                  style: theme.textTheme.titleSmall?.copyWith(
+                  formatBaht(booking.totalPrice),
+                  style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.w800,
                     color: ConcertTheme.accentDeep,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             Row(
               children: [
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: _isConfirmed
-                        ? const Color(0xFFE8F5E9)
-                        : const Color(0xFFF3F4F6),
-                    borderRadius: BorderRadius.circular(999),
+                _ConfirmedBadge(),
+                const Spacer(),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
+                  onPressed: () => showCancelBookingDialog(context),
                   child: Text(
-                    _statusLabel,
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: _isConfirmed
-                          ? const Color(0xFF2E7D32)
-                          : const Color(0xFF6B7280),
+                    'Cancel',
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: theme.colorScheme.error,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
-                const Spacer(),
-                if (cancelBusy)
-                  const SizedBox(
-                    width: 18,
-                    height: 18,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                else
-                  TextButton(
-                    onPressed: onCancel,
-                    child: Text(
-                      'Cancel',
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        color: theme.colorScheme.error,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
               ],
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ConfirmedBadge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      decoration: BoxDecoration(
+        color: const Color(0xFFE8F5E9),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Color(0xFF2E7D32),
+            ),
+          ),
+          const SizedBox(width: 6),
+          Text(
+            'Confirmed',
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                  color: const Color(0xFF2E7D32),
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+        ],
       ),
     );
   }

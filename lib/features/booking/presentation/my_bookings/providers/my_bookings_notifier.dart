@@ -1,5 +1,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../concert/domain/entities/concert.dart';
+import '../../../../concert/domain/providers/concert_providers.dart';
 import '../../../domain/entities/booking.dart';
 import '../../../domain/providers/booking_providers.dart';
 import 'my_bookings_state.dart';
@@ -17,9 +19,26 @@ class MyBookingsNotifier extends _$MyBookingsNotifier {
       message: '',
     );
 
-    final result = await ref.read(bookingRepositoryProvider).fetchMyBookings();
+    final results = await Future.wait([
+      ref.read(bookingRepositoryProvider).fetchMyBookings(),
+      ref.read(concertRepositoryProvider).fetchConcerts(),
+    ]);
 
-    result.fold(
+    final bookingResult = results[0] as dynamic;
+    final concertResult = results[1] as dynamic;
+
+    List<Booking> bookings = [];
+    Map<int, Concert> concertMap = {};
+
+    final concertEither = concertResult;
+    concertEither.fold(
+      (_) {},
+      (concerts) {
+        concertMap = {for (final c in concerts as List<Concert>) c.id: c};
+      },
+    );
+
+    bookingResult.fold(
       (failure) {
         state = state.copyWith(
           state: MyBookingsConcreteState.failure,
@@ -27,44 +46,15 @@ class MyBookingsNotifier extends _$MyBookingsNotifier {
         );
       },
       (items) {
+        bookings = items as List<Booking>;
         state = state.copyWith(
-          bookings: items,
-          hasData: items.isNotEmpty,
+          bookings: bookings,
+          concerts: concertMap,
+          hasData: bookings.isNotEmpty,
           state: MyBookingsConcreteState.loaded,
         );
       },
     );
   }
 
-  Future<String?> cancel(Booking booking) async {
-    if (state.cancelBusyId != null) return null;
-
-    final previous = List<Booking>.from(state.bookings);
-
-    /// Optimistic UX (§7.5).
-    final filtered =
-        previous.where((b) => b.id != booking.id).toList(growable: false);
-    state = state.copyWith(bookings: filtered, cancelBusyId: booking.id);
-
-    final repo = ref.read(bookingRepositoryProvider);
-    final outcome = await repo.cancelBooking(booking.id);
-
-    return outcome.fold(
-      (failure) {
-        state = state.copyWith(
-          bookings: previous,
-          resetCancelBusyId: true,
-        );
-        return failure.message;
-      },
-      (_) {
-        state = state.copyWith(
-          bookings: filtered,
-          hasData: filtered.isNotEmpty,
-          resetCancelBusyId: true,
-        );
-        return null;
-      },
-    );
-  }
 }

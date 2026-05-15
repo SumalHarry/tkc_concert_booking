@@ -1,27 +1,24 @@
 import 'package:flutter/material.dart';
 
-Future<bool> showCancelBookingDialog(BuildContext context) async {
-  final result = await showDialog<bool>(
+Future<void> showCancelBookingDialog(BuildContext context) {
+  return showDialog<void>(
     context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: const Text('Cancel booking?'),
-        content: const Text(
-          'This will release your seats back to availability (if your backend supports cancellation).',
+    builder: (ctx) => AlertDialog(
+      title: const Text('Cancel Booking'),
+      content: const Text('Are you sure you want to cancel this booking?'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(ctx).pop(),
+          child: const Text('No'),
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Keep'),
+        TextButton(
+          onPressed: () => Navigator.of(ctx).pop(),
+          child: Text(
+            'Yes, Cancel',
+            style: TextStyle(color: Theme.of(ctx).colorScheme.error),
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Cancel booking'),
-          ),
-        ],
-      );
-    },
+        ),
+      ],
+    ),
   );
-
-  return result ?? false;
 }

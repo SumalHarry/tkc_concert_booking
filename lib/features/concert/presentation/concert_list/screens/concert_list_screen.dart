@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:miniapp_concert/routing/route_names.dart';
 
-import '../../../../../routing/route_names.dart';
-import '../../../../../theme/concert_theme.dart';
+import '../../../../../shared/widgets/concert_app_bar.dart';
 import '../widgets/concert_card.dart';
 import '../providers/concert_list_notifier.dart';
 import '../providers/concert_list_state.dart';
@@ -70,7 +70,7 @@ class ConcertListScreen extends HookConsumerWidget {
       );
     } else {
       body = ListView.builder(
-        padding: const EdgeInsets.only(top: 8, bottom: 24),
+        padding: const EdgeInsets.only(top: 16, bottom: 24),
         physics: const AlwaysScrollableScrollPhysics(),
         itemCount: list.concerts.length,
         itemBuilder: (context, idx) {
@@ -89,42 +89,10 @@ class ConcertListScreen extends HookConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        titleSpacing: 0,
-        title: Align(
-          alignment: Alignment.center,
-          child: Text(
-            'Concerts',
-            style: Theme.of(
-              context,
-            ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-          ),
-        ),
-        leadingWidth: 96,
-        leading: TextButton.icon(
-          onPressed: () {
-            context.pop();
-          },
-          icon: const Icon(Icons.chevron_left, size: 24),
-          label: Text('Home', style: Theme.of(context).textTheme.labelLarge),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              context.pushNamed(ConcertRouteNames.bookings);
-            },
-            child: Text(
-              'My Bookings',
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w700,
-                color: ConcertTheme.accentDeep,
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-        ],
+      appBar: const ConcertAppBar(
+        title: 'Concerts',
+        backLabel: 'Home',
+        showActions: true,
       ),
       body: RefreshIndicator(onRefresh: onRefresh, child: body),
     );
