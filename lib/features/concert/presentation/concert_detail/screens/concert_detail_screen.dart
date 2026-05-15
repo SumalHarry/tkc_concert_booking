@@ -8,6 +8,7 @@ import '../../../../../core/utils/money_formatters.dart';
 import '../../../../../shared/widgets/concert_app_bar.dart';
 import '../../../../../theme/concert_theme.dart';
 import '../../concert_list/widgets/concert_card.dart';
+import '../widgets/info_row.dart';
 import '../widgets/ticket_quantity_selector.dart';
 import '../providers/concert_detail_notifier.dart';
 import '../providers/concert_detail_state.dart';
@@ -116,21 +117,21 @@ class ConcertDetailScreen extends HookConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  _InfoRow(
+                  InfoRow(
                     icon: Icons.calendar_month,
                     iconColor: ConcertTheme.accent,
                     title: 'Date & Time',
                     value: formatConcertDateTime(concert.dateTime),
                   ),
                   const SizedBox(height: 14),
-                  _InfoRow(
+                  InfoRow(
                     icon: Icons.location_on_outlined,
                     iconColor: const Color(0xFFE53935),
                     title: 'Venue',
                     value: concert.location,
                   ),
                   const SizedBox(height: 14),
-                  _InfoRow(
+                  InfoRow(
                     icon: Icons.confirmation_number_outlined,
                     iconColor: const Color(0xFF43A047),
                     title: 'Available Seats',
@@ -250,49 +251,6 @@ class ConcertDetailScreen extends HookConsumerWidget {
               ),
             ),
       body: RefreshIndicator(onRefresh: notifier.load, child: content),
-    );
-  }
-}
-
-class _InfoRow extends StatelessWidget {
-  const _InfoRow({
-    required this.icon,
-    required this.iconColor,
-    required this.title,
-    required this.value,
-  });
-
-  final IconData icon;
-  final Color iconColor;
-  final String title;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    final muted = Theme.of(context).textTheme.bodySmall?.copyWith(
-      color: const Color(0xFF6B7280),
-      fontWeight: FontWeight.w500,
-    );
-    final valueStyle = Theme.of(
-      context,
-    ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700);
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Icon(icon, color: iconColor, size: 22),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title, style: muted),
-              const SizedBox(height: 2),
-              Text(value, style: valueStyle),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
