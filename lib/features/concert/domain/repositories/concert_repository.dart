@@ -1,5 +1,5 @@
 import '../../../../core/network/models/either.dart';
-import '../../../../core/network/failures/app_exception.dart';
+import '../../../../core/network/models/app_exception.dart';
 import '../entities/concert.dart';
 
 abstract class ConcertRepository {

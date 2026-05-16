@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 
+import '../../../../core/network/as_object_list.dart';
 import '../../../../core/network/models/either.dart';
 import '../../../../core/network/dio_mapper.dart';
-import '../../../../core/network/failures/app_exception.dart';
+import '../../../../core/network/models/app_exception.dart';
 import '../../domain/entities/concert.dart';
 
 abstract class ConcertRemoteDataSource {
@@ -20,7 +21,7 @@ class ConcertRemoteDataSourceImpl implements ConcertRemoteDataSource {
   Future<Either<AppException, List<Concert>>> fetchConcerts() async {
     try {
       final res = await _dio.get<dynamic>('/concert');
-      final list = _asObjectList(res.data);
+      final list = asObjectList(res.data);
       final concerts = list
           .map(
             (raw) => Concert.fromJson(raw),
@@ -41,12 +42,4 @@ class ConcertRemoteDataSourceImpl implements ConcertRemoteDataSource {
       return Left(mapDioException(e, st));
     }
   }
-}
-
-List<dynamic> _asObjectList(dynamic data) {
-  if (data is List<dynamic>) return data;
-  if (data is Map && data['data'] is List<dynamic>) {
-    return data['data'] as List<dynamic>;
-  }
-  throw const FormatException('Unexpected concert list payload');
 }

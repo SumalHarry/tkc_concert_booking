@@ -1,7 +1,7 @@
 import '../../domain/repositories/booking_repository.dart';
 import '../../domain/entities/booking.dart';
 import '../../../../core/network/models/either.dart';
-import '../../../../core/network/failures/app_exception.dart';
+import '../../../../core/network/models/app_exception.dart';
 import '../datasources/booking_remote_datasource.dart';
 
 class BookingRepositoryImpl implements BookingRepository {

@@ -1,7 +1,7 @@
 import '../../domain/repositories/concert_repository.dart';
 import '../../domain/entities/concert.dart';
 import '../../../../core/network/models/either.dart';
-import '../../../../core/network/failures/app_exception.dart';
+import '../../../../core/network/models/app_exception.dart';
 import '../datasources/concert_remote_datasource.dart';
 
 class ConcertRepositoryImpl implements ConcertRepository {

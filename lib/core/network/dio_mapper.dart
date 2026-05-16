@@ -1,13 +1,12 @@
 import 'package:dio/dio.dart';
 
-import 'failures/app_exception.dart';
+import 'models/app_exception.dart';
 
 AppException mapDioException(Object error, [StackTrace? stackTrace]) {
   if (error is DioException) {
     final data = error.response?.data;
-    final message = _messageFromResponse(data) ??
-        error.message ??
-        error.type.name;
+    final message =
+        _messageFromResponse(data) ?? error.message ?? error.type.name;
     final code = error.response?.statusCode?.toString();
     return AppException(message, code: code);
   }

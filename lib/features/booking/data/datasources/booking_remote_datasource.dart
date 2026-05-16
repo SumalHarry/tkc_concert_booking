@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 
+import '../../../../core/network/as_object_list.dart';
 import '../../../../core/network/models/either.dart';
 import '../../../../core/network/dio_mapper.dart';
-import '../../../../core/network/failures/app_exception.dart';
+import '../../../../core/network/models/app_exception.dart';
 import '../../domain/entities/booking.dart';
 
 abstract class BookingRemoteDataSource {
@@ -12,7 +13,6 @@ abstract class BookingRemoteDataSource {
   });
 
   Future<Either<AppException, List<Booking>>> fetchBookings();
-
 }
 
 class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
@@ -40,22 +40,11 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
   Future<Either<AppException, List<Booking>>> fetchBookings() async {
     try {
       final res = await _dio.get<dynamic>('/booking');
-      final list = _asObjectList(res.data);
-      final bookings = list
-          .map((raw) => Booking.fromJson(raw))
-          .toList();
+      final list = asObjectList(res.data);
+      final bookings = list.map((raw) => Booking.fromJson(raw)).toList();
       return Right(bookings);
     } catch (e, st) {
       return Left(mapDioException(e, st));
     }
   }
-
-}
-
-List<dynamic> _asObjectList(dynamic data) {
-  if (data is List<dynamic>) return data;
-  if (data is Map && data['data'] is List<dynamic>) {
-    return data['data'] as List<dynamic>;
-  }
-  throw const FormatException('Unexpected booking list payload');
 }

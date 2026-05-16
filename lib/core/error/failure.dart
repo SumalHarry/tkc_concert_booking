@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import '../network/failures/app_exception.dart';
+import '../network/models/app_exception.dart';
 
 sealed class Failure extends Equatable {
   const Failure();
