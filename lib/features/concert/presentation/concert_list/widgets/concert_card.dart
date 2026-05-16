@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/date_formatters.dart';
@@ -29,14 +30,14 @@ class ConcertHero extends StatelessWidget {
         (url.startsWith('http'));
 
     if (hasRemote) {
-      child = Image.network(
-        url,
+      child = CachedNetworkImage(
+        imageUrl: url,
         height: height,
         width: double.infinity,
         fit: BoxFit.cover,
-        loadingBuilder: (context, w, prog) =>
-            prog == null ? w : Center(child: _placeholderContents()),
-        errorBuilder: (_, __, ___) => Container(
+        memCacheHeight: (height * 2).toInt(),
+        placeholder: (context, url) => Center(child: _placeholderContents()),
+        errorWidget: (context, url, error) => Container(
           height: height,
           alignment: Alignment.center,
           decoration: BoxDecoration(

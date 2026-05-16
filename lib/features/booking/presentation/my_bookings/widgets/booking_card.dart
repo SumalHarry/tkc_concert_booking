@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../core/utils/date_formatters.dart';
@@ -29,10 +30,13 @@ class _BookingThumb extends StatelessWidget {
         width: 56,
         height: 56,
         child: hasRemote
-            ? Image.network(
-                c.imageUrl,
+            ? CachedNetworkImage(
+                imageUrl: c.imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => _placeholder(gradient, icon),
+                memCacheWidth: 112,
+                placeholder: (context, url) => _placeholder(gradient, icon),
+                errorWidget: (context, url, error) =>
+                    _placeholder(gradient, icon),
               )
             : _placeholder(gradient, icon),
       ),
