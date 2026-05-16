@@ -23,7 +23,7 @@ class ConcertRemoteDataSourceImpl implements ConcertRemoteDataSource {
       final list = _asObjectList(res.data);
       final concerts = list
           .map(
-            (raw) => Concert.fromJson(Map<String, dynamic>.from(raw as Map)),
+            (raw) => Concert.fromJson(raw),
           )
           .toList();
       return Right(concerts);
@@ -36,18 +36,11 @@ class ConcertRemoteDataSourceImpl implements ConcertRemoteDataSource {
   Future<Either<AppException, Concert>> fetchConcertById(int id) async {
     try {
       final res = await _dio.get<dynamic>('/concert/$id');
-      final payload = _unwrapObject(res.data);
-      return Right(Concert.fromJson(payload));
+      return Right(Concert.fromJson(res.data));
     } catch (e, st) {
       return Left(mapDioException(e, st));
     }
   }
-}
-
-Map<String, dynamic> _unwrapObject(dynamic data) {
-  if (data is Map<String, dynamic>) return data;
-  if (data is Map) return Map<String, dynamic>.from(data);
-  throw const FormatException('Unexpected concert payload');
 }
 
 List<dynamic> _asObjectList(dynamic data) {

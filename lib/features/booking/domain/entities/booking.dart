@@ -14,6 +14,6 @@ abstract class Booking with _$Booking {
     required String createdAt,
   }) = _Booking;
 
-  factory Booking.fromJson(Map<String, dynamic> json) =>
-      _$BookingFromJson(json);
+  factory Booking.fromJson(dynamic json) =>
+      _$BookingFromJson(json as Map<String, dynamic>);
 }

@@ -30,8 +30,7 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
         '/booking',
         data: {'concertId': concertId, 'quantity': quantity},
       );
-      final payload = _unwrapObject(res.data);
-      return Right(Booking.fromJson(payload));
+      return Right(Booking.fromJson(res.data));
     } catch (e, st) {
       return Left(mapDioException(e, st));
     }
@@ -43,7 +42,7 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
       final res = await _dio.get<dynamic>('/booking');
       final list = _asObjectList(res.data);
       final bookings = list
-          .map((raw) => Booking.fromJson(Map<String, dynamic>.from(raw as Map)))
+          .map((raw) => Booking.fromJson(raw))
           .toList();
       return Right(bookings);
     } catch (e, st) {
@@ -51,12 +50,6 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
     }
   }
 
-}
-
-Map<String, dynamic> _unwrapObject(dynamic data) {
-  if (data is Map<String, dynamic>) return data;
-  if (data is Map) return Map<String, dynamic>.from(data);
-  throw const FormatException('Unexpected booking payload');
 }
 
 List<dynamic> _asObjectList(dynamic data) {

@@ -14,6 +14,6 @@ abstract class BookingConcert with _$BookingConcert {
     required int pricePerTicket,
   }) = _BookingConcert;
 
-  factory BookingConcert.fromJson(Map<String, dynamic> json) =>
-      _$BookingConcertFromJson(json);
+  factory BookingConcert.fromJson(dynamic json) =>
+      _$BookingConcertFromJson(json as Map<String, dynamic>);
 }

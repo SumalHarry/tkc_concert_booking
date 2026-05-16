@@ -28,6 +28,6 @@ abstract class Concert with _$Concert {
     @JsonKey(name: 'image') required String imageUrl,
   }) = _Concert;
 
-  factory Concert.fromJson(Map<String, dynamic> json) =>
-      _$ConcertFromJson(json);
+  factory Concert.fromJson(dynamic json) =>
+      _$ConcertFromJson(json as Map<String, dynamic>);
 }
