@@ -10,6 +10,7 @@ import '../../../../../theme/concert_theme.dart';
 import '../../concert_list/widgets/concert_card.dart';
 import '../widgets/info_row.dart';
 import '../widgets/ticket_quantity_selector.dart';
+import '../../concert_list/providers/concert_list_notifier.dart';
 import '../providers/concert_detail_notifier.dart';
 import '../providers/concert_detail_state.dart';
 
@@ -33,8 +34,7 @@ class ConcertDetailScreen extends HookConsumerWidget {
 
     final concertForActions = concertDetailState.concert;
     final quantityForActions = concertDetailState.clampedQuantity;
-    final canBook =
-        concertForActions != null &&
+    final canBook = concertForActions != null &&
         concertForActions.availableSeats > 0 &&
         quantityForActions > 0 &&
         !concertDetailState.bookingBusy;
@@ -47,6 +47,9 @@ class ConcertDetailScreen extends HookConsumerWidget {
         messenger.showSnackBar(
           const SnackBar(content: Text('Booking confirmed.')),
         );
+        ref.read(concertListProvider.notifier).load();
+        await notifier.load();
+        if (!context.mounted) return;
         context.pop();
         return;
       }
@@ -59,14 +62,17 @@ class ConcertDetailScreen extends HookConsumerWidget {
 
     Widget content;
 
-    if (concertDetailState.state == ConcertDetailConcreteState.failure && concertDetailState.concert == null) {
+    if (concertDetailState.state == ConcertDetailConcreteState.failure &&
+        concertDetailState.concert == null) {
       content = ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(24),
         children: [
           const SizedBox(height: 64),
           Text(
-            concertDetailState.message.isEmpty ? 'Could not load this concert.' : concertDetailState.message,
+            concertDetailState.message.isEmpty
+                ? 'Could not load this concert.'
+                : concertDetailState.message,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
@@ -151,15 +157,17 @@ class ConcertDetailScreen extends HookConsumerWidget {
                       const Spacer(),
                       TicketQuantitySelector(
                         quantity: quantity <= 0 ? 0 : quantity,
-                        canDecrease: quantity > 1 && !concertDetailState.bookingBusy,
-                        canIncrease:
-                            quantity < concert.availableSeats && !concertDetailState.bookingBusy,
+                        canDecrease:
+                            quantity > 1 && !concertDetailState.bookingBusy,
+                        canIncrease: quantity < concert.availableSeats &&
+                            !concertDetailState.bookingBusy,
                         onMinus: notifier.decrement,
                         onPlus: notifier.increment,
                       ),
                     ],
                   ),
-                  if (concertDetailState.state == ConcertDetailConcreteState.failure &&
+                  if (concertDetailState.state ==
+                          ConcertDetailConcreteState.failure &&
                       concertDetailState.message.isNotEmpty) ...[
                     const SizedBox(height: 12),
                     Text(

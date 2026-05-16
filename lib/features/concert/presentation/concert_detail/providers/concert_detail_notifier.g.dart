@@ -59,7 +59,7 @@ final class ConcertDetailNotifierProvider
 }
 
 String _$concertDetailNotifierHash() =>
-    r'3c64f94432561500c75c84d45fd15a6cb635f013';
+    r'ee24091d996cb5870e1a81feb693d5a1759df07c';
 
 final class ConcertDetailNotifierFamily extends $Family
     with
