@@ -21,7 +21,7 @@ class ConcertDetailScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = concertDetailProvider(concertId);
-    final s = ref.watch(provider);
+    final concertDetailState = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
 
     useEffect(() {
@@ -31,13 +31,13 @@ class ConcertDetailScreen extends HookConsumerWidget {
 
     final theme = Theme.of(context);
 
-    final concertForActions = s.concert;
-    final qtyForActions = s.clampedQuantity;
+    final concertForActions = concertDetailState.concert;
+    final quantityForActions = concertDetailState.clampedQuantity;
     final canBook =
         concertForActions != null &&
         concertForActions.availableSeats > 0 &&
-        qtyForActions > 0 &&
-        !s.bookingBusy;
+        quantityForActions > 0 &&
+        !concertDetailState.bookingBusy;
 
     Future<void> onBook() async {
       final ok = await notifier.book();
@@ -59,14 +59,14 @@ class ConcertDetailScreen extends HookConsumerWidget {
 
     Widget content;
 
-    if (s.state == ConcertDetailConcreteState.failure && s.concert == null) {
+    if (concertDetailState.state == ConcertDetailConcreteState.failure && concertDetailState.concert == null) {
       content = ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(24),
         children: [
           const SizedBox(height: 64),
           Text(
-            s.message.isEmpty ? 'Could not load this concert.' : s.message,
+            concertDetailState.message.isEmpty ? 'Could not load this concert.' : concertDetailState.message,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
@@ -78,15 +78,15 @@ class ConcertDetailScreen extends HookConsumerWidget {
           ),
         ],
       );
-    } else if (s.state == ConcertDetailConcreteState.loading &&
-        s.concert == null) {
+    } else if (concertDetailState.state == ConcertDetailConcreteState.loading &&
+        concertDetailState.concert == null) {
       content = const Center(child: CircularProgressIndicator());
     } else {
-      final concert = s.concert;
+      final concert = concertDetailState.concert;
       if (concert == null) {
         content = const SizedBox.shrink();
       } else {
-        final qty = s.clampedQuantity;
+        final quantity = concertDetailState.clampedQuantity;
 
         content = ListView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -150,20 +150,20 @@ class ConcertDetailScreen extends HookConsumerWidget {
                       ),
                       const Spacer(),
                       TicketQuantitySelector(
-                        quantity: qty <= 0 ? 0 : qty,
-                        canDecrease: qty > 1 && !s.bookingBusy,
+                        quantity: quantity <= 0 ? 0 : quantity,
+                        canDecrease: quantity > 1 && !concertDetailState.bookingBusy,
                         canIncrease:
-                            qty < concert.availableSeats && !s.bookingBusy,
+                            quantity < concert.availableSeats && !concertDetailState.bookingBusy,
                         onMinus: notifier.decrement,
                         onPlus: notifier.increment,
                       ),
                     ],
                   ),
-                  if (s.state == ConcertDetailConcreteState.failure &&
-                      s.message.isNotEmpty) ...[
+                  if (concertDetailState.state == ConcertDetailConcreteState.failure &&
+                      concertDetailState.message.isNotEmpty) ...[
                     const SizedBox(height: 12),
                     Text(
-                      s.message,
+                      concertDetailState.message,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.error,
                       ),
@@ -182,7 +182,7 @@ class ConcertDetailScreen extends HookConsumerWidget {
         title: '',
         backLabel: 'Concerts',
       ),
-      bottomNavigationBar: (s.concert == null)
+      bottomNavigationBar: (concertDetailState.concert == null)
           ? null
           : SafeArea(
               top: false,
@@ -201,7 +201,7 @@ class ConcertDetailScreen extends HookConsumerWidget {
                           ),
                         ),
                         Text(
-                          formatBaht(s.totalPrice),
+                          formatBaht(concertDetailState.totalPrice),
                           style: theme.textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.w800,
                             color: ConcertTheme.accentDeep,
@@ -225,7 +225,7 @@ class ConcertDetailScreen extends HookConsumerWidget {
                           ),
                           child: AnimatedSwitcher(
                             duration: const Duration(milliseconds: 200),
-                            child: s.bookingBusy
+                            child: concertDetailState.bookingBusy
                                 ? const SizedBox(
                                     width: 22,
                                     height: 22,

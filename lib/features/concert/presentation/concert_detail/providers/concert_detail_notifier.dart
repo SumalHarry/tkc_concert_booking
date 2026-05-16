@@ -43,9 +43,9 @@ class ConcertDetailNotifier extends _$ConcertDetailNotifier {
   }
 
   void changeQuantity(int next) {
-    final c = state.concert;
-    if (c == null || c.availableSeats < 1) return;
-    final clamped = next.clamp(1, c.availableSeats);
+    final concert = state.concert;
+    if (concert == null || concert.availableSeats < 1) return;
+    final clamped = next.clamp(1, concert.availableSeats);
     state = state.copyWith(quantity: clamped);
   }
 
@@ -54,12 +54,12 @@ class ConcertDetailNotifier extends _$ConcertDetailNotifier {
   void decrement() => changeQuantity(state.quantity - 1);
 
   Future<bool> book() async {
-    final c = state.concert;
-    if (c == null || c.availableSeats < 1 || state.bookingBusy) return false;
+    final concert = state.concert;
+    if (concert == null || concert.availableSeats < 1 || state.bookingBusy) return false;
 
     state = state.copyWith(bookingBusy: true, message: '');
     final result = await ref.read(bookingRepositoryProvider).bookConcert(
-          concertId: c.id,
+          concertId: concert.id,
           quantity: state.clampedQuantity,
         );
 

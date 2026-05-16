@@ -34,7 +34,7 @@ class MyBookingsNotifier extends _$MyBookingsNotifier {
     concertEither.fold(
       (_) {},
       (concerts) {
-        concertMap = {for (final c in concerts as List<Concert>) c.id: c};
+        concertMap = {for (final concert in concerts as List<Concert>) concert.id: concert};
       },
     );
 

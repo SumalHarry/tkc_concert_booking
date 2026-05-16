@@ -4,7 +4,7 @@ sealed class Either<L, R> {
   bool get isRight => this is Right<L, R>;
   bool get isLeft => this is Left<L, R>;
 
-  T fold<T>(T Function(L l) left, T Function(R r) right);
+  T fold<T>(T Function(L leftValue) onLeft, T Function(R rightValue) onRight);
 }
 
 final class Left<L, R> extends Either<L, R> {
@@ -12,7 +12,8 @@ final class Left<L, R> extends Either<L, R> {
   final L value;
 
   @override
-  T fold<T>(T Function(L l) left, T Function(R r) right) => left(value);
+  T fold<T>(T Function(L leftValue) onLeft, T Function(R rightValue) onRight) =>
+      onLeft(value);
 }
 
 final class Right<L, R> extends Either<L, R> {
@@ -20,5 +21,6 @@ final class Right<L, R> extends Either<L, R> {
   final R value;
 
   @override
-  T fold<T>(T Function(L l) left, T Function(R r) right) => right(value);
+  T fold<T>(T Function(L leftValue) onLeft, T Function(R rightValue) onRight) =>
+      onRight(value);
 }

@@ -75,20 +75,20 @@ class MyBookingsScreen extends HookConsumerWidget {
     } else {
       // Group bookings by concertId and sum quantities
       final grouped = <int, ({int concertId, int totalQuantity, int totalPrice, int firstBookingId})>{};
-      for (final b in list.bookings) {
-        final existing = grouped[b.concertId];
+      for (final booking in list.bookings) {
+        final existing = grouped[booking.concertId];
         if (existing == null) {
-          grouped[b.concertId] = (
-            concertId: b.concertId,
-            totalQuantity: b.quantity,
-            totalPrice: b.totalPrice,
-            firstBookingId: b.id,
+          grouped[booking.concertId] = (
+            concertId: booking.concertId,
+            totalQuantity: booking.quantity,
+            totalPrice: booking.totalPrice,
+            firstBookingId: booking.id,
           );
         } else {
-          grouped[b.concertId] = (
-            concertId: b.concertId,
-            totalQuantity: existing.totalQuantity + b.quantity,
-            totalPrice: existing.totalPrice + b.totalPrice,
+          grouped[booking.concertId] = (
+            concertId: booking.concertId,
+            totalQuantity: existing.totalQuantity + booking.quantity,
+            totalPrice: existing.totalPrice + booking.totalPrice,
             firstBookingId: existing.firstBookingId,
           );
         }
@@ -99,14 +99,14 @@ class MyBookingsScreen extends HookConsumerWidget {
         padding: const EdgeInsets.only(top: 8, bottom: 24),
         physics: const AlwaysScrollableScrollPhysics(),
         itemCount: groupedList.length,
-        itemBuilder: (context, idx) {
-          final g = groupedList[idx];
+        itemBuilder: (context, index) {
+          final groupedBooking = groupedList[index];
           return BookingCard(
-            concertId: g.concertId,
-            totalQuantity: g.totalQuantity,
-            totalPrice: g.totalPrice,
-            bookingId: g.firstBookingId,
-            concert: list.concertFor(g.concertId),
+            concertId: groupedBooking.concertId,
+            totalQuantity: groupedBooking.totalQuantity,
+            totalPrice: groupedBooking.totalPrice,
+            bookingId: groupedBooking.firstBookingId,
+            concert: list.concertFor(groupedBooking.concertId),
           );
         },
       );

@@ -20,26 +20,26 @@ class ConcertRemoteDataSourceImpl implements ConcertRemoteDataSource {
   @override
   Future<Either<AppException, List<Concert>>> fetchConcerts() async {
     try {
-      final res = await _dio.get<dynamic>('/concert');
-      final list = asObjectList(res.data);
+      final response = await _dio.get<dynamic>('/concert');
+      final list = asObjectList(response.data);
       final concerts = list
           .map(
-            (raw) => Concert.fromJson(raw),
+            (jsonItem) => Concert.fromJson(jsonItem),
           )
           .toList();
       return Right(concerts);
-    } catch (e, st) {
-      return Left(mapDioException(e, st));
+    } catch (error, stackTrace) {
+      return Left(mapDioException(error, stackTrace));
     }
   }
 
   @override
   Future<Either<AppException, Concert>> fetchConcertById(int id) async {
     try {
-      final res = await _dio.get<dynamic>('/concert/$id');
-      return Right(Concert.fromJson(res.data));
-    } catch (e, st) {
-      return Left(mapDioException(e, st));
+      final response = await _dio.get<dynamic>('/concert/$id');
+      return Right(Concert.fromJson(response.data));
+    } catch (error, stackTrace) {
+      return Left(mapDioException(error, stackTrace));
     }
   }
 }

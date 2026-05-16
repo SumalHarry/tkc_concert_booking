@@ -73,14 +73,14 @@ class ConcertListScreen extends HookConsumerWidget {
         padding: const EdgeInsets.only(top: 16, bottom: 24),
         physics: const AlwaysScrollableScrollPhysics(),
         itemCount: list.concerts.length,
-        itemBuilder: (context, idx) {
-          final c = list.concerts[idx];
+        itemBuilder: (context, index) {
+          final concert = list.concerts[index];
           return ConcertCard(
-            concert: c,
+            concert: concert,
             onTap: () {
               context.pushNamed(
                 ConcertRouteNames.detail,
-                pathParameters: {'concertId': '${c.id}'},
+                pathParameters: {'concertId': '${concert.id}'},
               );
             },
           );

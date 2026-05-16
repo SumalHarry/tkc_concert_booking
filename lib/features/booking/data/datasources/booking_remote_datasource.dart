@@ -26,25 +26,25 @@ class BookingRemoteDataSourceImpl implements BookingRemoteDataSource {
     required int quantity,
   }) async {
     try {
-      final res = await _dio.post<dynamic>(
+      final response = await _dio.post<dynamic>(
         '/booking',
         data: {'concertId': concertId, 'quantity': quantity},
       );
-      return Right(Booking.fromJson(res.data));
-    } catch (e, st) {
-      return Left(mapDioException(e, st));
+      return Right(Booking.fromJson(response.data));
+    } catch (error, stackTrace) {
+      return Left(mapDioException(error, stackTrace));
     }
   }
 
   @override
   Future<Either<AppException, List<Booking>>> fetchBookings() async {
     try {
-      final res = await _dio.get<dynamic>('/booking');
-      final list = asObjectList(res.data);
-      final bookings = list.map((raw) => Booking.fromJson(raw)).toList();
+      final response = await _dio.get<dynamic>('/booking');
+      final list = asObjectList(response.data);
+      final bookings = list.map((jsonItem) => Booking.fromJson(jsonItem)).toList();
       return Right(bookings);
-    } catch (e, st) {
-      return Left(mapDioException(e, st));
+    } catch (error, stackTrace) {
+      return Left(mapDioException(error, stackTrace));
     }
   }
 }

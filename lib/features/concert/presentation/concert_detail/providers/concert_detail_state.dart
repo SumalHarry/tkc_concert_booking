@@ -27,19 +27,19 @@ class ConcertDetailState extends Equatable {
   final bool bookingBusy;
 
   int get clampedQuantity {
-    final c = concert;
-    if (c == null || c.availableSeats <= 0) return 0;
+    final concert = this.concert;
+    if (concert == null || concert.availableSeats <= 0) return 0;
     if (quantity < 1) return 1;
-    if (quantity > c.availableSeats) return c.availableSeats;
+    if (quantity > concert.availableSeats) return concert.availableSeats;
     return quantity;
   }
 
   int get totalPrice {
-    final c = concert;
-    if (c == null) return 0;
-    final q = clampedQuantity;
-    if (q <= 0) return 0;
-    return c.pricePerTicket * q;
+    final concert = this.concert;
+    if (concert == null) return 0;
+    final quantity = clampedQuantity;
+    if (quantity <= 0) return 0;
+    return concert.pricePerTicket * quantity;
   }
 
   ConcertDetailState copyWith({
