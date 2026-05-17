@@ -45,7 +45,11 @@ class ConcertDetailScreen extends HookConsumerWidget {
       final messenger = ScaffoldMessenger.of(context);
       if (ok) {
         messenger.showSnackBar(
-          const SnackBar(content: Text('Booking confirmed.')),
+          const SnackBar(
+            content: Text('Booking confirmed.'),
+            backgroundColor: ConcertTheme.accent,
+            behavior: SnackBarBehavior.floating,
+          ),
         );
         ref.read(concertListProvider.notifier).load();
         await notifier.load();
@@ -56,7 +60,13 @@ class ConcertDetailScreen extends HookConsumerWidget {
 
       final msg = ref.read(provider).message;
       if (msg.isNotEmpty) {
-        messenger.showSnackBar(SnackBar(content: Text(msg)));
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text(msg),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
       }
     }
 
