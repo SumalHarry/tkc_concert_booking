@@ -123,3 +123,9 @@ is `lib/concert_app.dart`; routes are in `lib/routes.dart`.
 
 Never edit generated files (`.g.dart`, `.freezed.dart`) — regenerate with
 `make gen`. See `CLAUDE.md` for detailed architecture notes.
+
+## Screensho
+<img width="400" alt="Simulator Screenshot - iPhone Air - 2026-05-17 at 14 52 13" src="https://github.com/user-attachments/assets/274a1bbf-3454-4754-9717-327508cd7a4c" />
+<img width="400" alt="Simulator Screenshot - iPhone Air - 2026-05-17 at 14 52 15" src="https://github.com/user-attachments/assets/2788817c-f29e-447e-90fa-dce2d86cefcc" />
+<img width="400" alt="Simulator Screenshot - iPhone Air - 2026-05-17 at 14 52 19" src="https://github.com/user-attachments/assets/673e38ea-3125-480f-911d-c90b09f97fd0" />
+
