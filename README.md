@@ -1,8 +1,9 @@
 # Concert Booking — Mini App (`miniapp_concert`)
 
 Flutter mini-app package for concert browsing and ticket booking. This is **not
-a standalone app** (no `main.dart`) — it is consumed by `tkc_core_app` as a
-local path dependency and launched from the host's mini-app launcher.
+a standalone app** (no `main.dart`) — it is consumed by
+[`tkc_vender_auth`](https://github.com/SumalHarry/tkc_vender_auth) as a local path dependency
+and launched from the host's mini-app launcher.
 
 ## Prerequisites
 
@@ -39,15 +40,55 @@ make gen              # code generation (freezed, riverpod, json_serializable)
 
 ## Run
 
-There is nothing to run directly. Launch the host app and open the concert
-mini app from its launcher:
+There is nothing to run directly. Use the host app
+[`tkc_vender_auth`](https://github.com/SumalHarry/tkc_vender_auth) for login, session restore,
+token refresh, and authenticated API calls, then open **Concert** from the home launcher.
+
+### Repository layout
+
+The host expects mini apps as **sibling directories** (see `path` dependencies in the host
+`pubspec.yaml`):
+
+```
+workspace/
+  tkc_vender_auth/
+  tkc_shopping/
+  tkc_concert_booking/
+```
+
+### 1. Set up this mini app
+
+Complete [Setup](#setup) in this repo first (`fvm use stable`, `pub get`, `make gen`).
 
 ```bash
-cd ../tkc_core_app
+cd tkc_concert_booking
+fvm use stable
+fvm flutter pub get
+make gen
+```
+
+### 2. Set up and run the host
+
+Clone the host and the other mini app as siblings, then configure and run the host:
+
+```bash
+git clone https://github.com/SumalHarry/tkc_vender_auth.git
+# clone tkc_shopping next to tkc_vender_auth if you have not already
+
+cd tkc_vender_auth
+cp .env.example .env          # set BASE_URL (default http://localhost:3000)
+fvm use stable
+fvm flutter pub get
+make gen
+cd ios && pod install && cd .. # iOS only
+
 fvm flutter run
 ```
 
-The host injects the auth token into this package's Dio instance.
+### 3. Log in and open Concert
+
+Log in on the host app, then tap **Concert** on the home screen. The host overrides this
+package's Dio provider with an authenticated instance (Bearer token + automatic refresh).
 
 ## Common commands
 
