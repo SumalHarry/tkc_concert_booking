@@ -84,12 +84,13 @@ class ConcertDetailScreen extends HookConsumerWidget {
                 ? 'Could not load this concert.'
                 : concertDetailState.message,
             textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
           Center(
             child: ElevatedButton(
               onPressed: notifier.load,
-              child: const Text('Retry'),
+              child: Text('Retry', style: theme.textTheme.labelLarge),
             ),
           ),
         ],
@@ -252,12 +253,11 @@ class ConcertDetailScreen extends HookConsumerWidget {
                                       color: Colors.white,
                                     ),
                                   )
-                                : const Text(
+                                : Text(
                                     'Book Now',
-                                    key: ValueKey('book_label'),
-                                    style: TextStyle(
+                                    key: const ValueKey('book_label'),
+                                    style: theme.textTheme.titleMedium?.copyWith(
                                       fontWeight: FontWeight.w700,
-                                      fontSize: 16,
                                     ),
                                   ),
                           ),

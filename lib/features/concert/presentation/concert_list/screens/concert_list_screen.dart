@@ -29,6 +29,8 @@ class ConcertListScreen extends HookConsumerWidget {
 
     late final Widget body;
 
+    final textTheme = Theme.of(context).textTheme;
+
     if (list.state == ConcertListConcreteState.failure) {
       body = ListView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -38,6 +40,7 @@ class ConcertListScreen extends HookConsumerWidget {
           Text(
             list.message.isEmpty ? 'Something went wrong.' : list.message,
             textAlign: TextAlign.center,
+            style: textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
           Center(
@@ -45,7 +48,7 @@ class ConcertListScreen extends HookConsumerWidget {
               onPressed: () {
                 ref.read(concertListProvider.notifier).load();
               },
-              child: const Text('Retry'),
+              child: Text('Retry', style: textTheme.labelLarge),
             ),
           ),
         ],
@@ -58,12 +61,13 @@ class ConcertListScreen extends HookConsumerWidget {
       body = ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(24),
-        children: const [
-          SizedBox(height: 48),
+        children: [
+          const SizedBox(height: 48),
           Center(
             child: Text(
               'No concerts available yet.',
               textAlign: TextAlign.center,
+              style: textTheme.bodyMedium,
             ),
           ),
         ],

@@ -28,6 +28,7 @@ class MyBookingsScreen extends HookConsumerWidget {
     late final Widget body;
 
     if (list.state == MyBookingsConcreteState.failure) {
+      final textTheme = Theme.of(context).textTheme;
       body = ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(24),
@@ -36,6 +37,7 @@ class MyBookingsScreen extends HookConsumerWidget {
           Text(
             list.message.isEmpty ? 'Could not load bookings.' : list.message,
             textAlign: TextAlign.center,
+            style: textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
           Center(
@@ -43,7 +45,7 @@ class MyBookingsScreen extends HookConsumerWidget {
               onPressed: () {
                 ref.read(myBookingsProvider.notifier).load();
               },
-              child: const Text('Retry'),
+              child: Text('Retry', style: textTheme.labelLarge),
             ),
           ),
         ],
@@ -53,21 +55,23 @@ class MyBookingsScreen extends HookConsumerWidget {
         list.bookings.isEmpty) {
       body = const Center(child: CircularProgressIndicator());
     } else if (!list.hasData) {
+      final textTheme = Theme.of(context).textTheme;
       body = ListView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.all(24),
-        children: const [
-          SizedBox(height: 56),
-          Icon(
+        children: [
+          const SizedBox(height: 56),
+          const Icon(
             Icons.event_available_outlined,
             size: 44,
             color: Color(0xFF9CA3AF),
           ),
-          SizedBox(height: 12),
+          const SizedBox(height: 12),
           Center(
             child: Text(
               'No bookings yet.\nPick a concert and tap Book Now.',
               textAlign: TextAlign.center,
+              style: textTheme.bodyMedium,
             ),
           ),
         ],
