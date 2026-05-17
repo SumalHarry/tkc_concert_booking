@@ -5,9 +5,11 @@ Flutter mini app package for concert browsing and ticket booking. Consumed by `t
 ## Tech Stack
 
 - **Flutter** package (not a standalone app — no `main.dart`)
-- **State management**: Riverpod (`riverpod_annotation`)
+- **State management**: Riverpod (`riverpod_annotation`, `hooks_riverpod`, `flutter_hooks`)
 - **Networking**: `dio`
+- **Navigation**: `go_router`
 - **Data modeling**: `freezed` + `json_serializable`
+- **Images**: `cached_network_image`
 
 ## Commands
 
@@ -40,7 +42,7 @@ lib/
       concert_dio_provider.dart   # Dio instance for this mini app
       dio_mapper.dart
       as_object_list.dart
-      models/                     # Either, AppException, Unit
+      models/                     # either, app_exception, unit
     error/
       failure.dart
     utils/
@@ -65,7 +67,7 @@ feature/
     repositories/    # abstract interfaces
     providers/       # Riverpod providers
   presentation/
-    <screen_name>/
+    <screen_name>/   # e.g. concert_list, concert_detail, my_bookings
       providers/     # notifier + state
       screens/
       widgets/
@@ -75,11 +77,12 @@ feature/
 
 ### Concert
 - `concert_list` — browsable list of concerts with `ConcertCard`
-- `concert_detail` — details + ticket quantity selector, triggers booking
+- `concert_detail` — details with `InfoRow` rows + `TicketQuantitySelector`, triggers booking
 
 ### Booking
-- `booking` — creates a booking via API
-- `my_bookings` — lists user's bookings with cancel dialog
+- `my_bookings` — lists user's bookings with `BookingCard` and `CancelDialog`
+- Booking creation flows through `BookingRemoteDatasource` / `BookingRepository`
+- `BookingConcert` entity holds the concert snapshot embedded in a booking
 
 ## Key Patterns
 
