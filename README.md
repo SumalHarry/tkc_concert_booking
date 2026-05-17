@@ -57,6 +57,23 @@ make autogen    # code generation in watch mode
 fvm flutter test
 ```
 
+## Deploy
+
+1. Run code generation:
+
+```bash
+make gen
+```
+
+2. Commit your changes, then push a version tag (bump to the next version):
+
+```bash
+git tag v1.0.1   # increment from the current version
+git push origin v1.0.1
+```
+
+The tag version should follow [semver](https://semver.org/) and match `version` in `pubspec.yaml`.
+
 ## Architecture
 
 Clean Architecture with feature-based folders under `lib/features/` (`concert`,
